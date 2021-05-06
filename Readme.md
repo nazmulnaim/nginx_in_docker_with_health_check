@@ -8,7 +8,7 @@ To obtain the GeoIP2 license you will need to visit <https://www.maxmind.com/en/
 
 ## Build instruction
 
-`docker build -t nginx-with-health-check-geoip2-vts:1.17.5-ubuntu-20.04-vts:latest .`
+`docker build -t nginx-with-health-check-geoip2-vts:latest .`
 
 ## Run instruction
 
