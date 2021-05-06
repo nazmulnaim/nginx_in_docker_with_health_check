@@ -1,0 +1,10 @@
+version: "3.9"  # optional since v1.27.0
+services:
+  nginx:
+    image: nginx-with-health-check-geoip2-vts:1.17.5-ubuntu-20.04-vts:latest
+    ports:
+      - "80:80"
+      - "11050:11050"
+    restart: on-failure
+    volumes:
+      - ./log/:/var/log/nginx/
