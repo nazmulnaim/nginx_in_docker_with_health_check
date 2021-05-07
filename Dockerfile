@@ -9,8 +9,6 @@ ENV VTS_EXPORTER_VERSION 0.10.3
 ENV OPENSSL_VERSION 1.1.1
 ENV PCRE_VERSION 8.44
 ENV ZLIB_VERSION 1.2.11
-ENV GOIP_MODULE_VERSION 3.3
-ENV LICENSE_KEY_FOR_GEOIP ABCDEFGHIJKL
 
 RUN mkdir -p /usr/src
 
@@ -98,18 +96,6 @@ RUN wget https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz \
 
 COPY nginx_upstream_check_module /usr/src/nginx_upstream_check_module
 
-RUN wget https://github.com/maxmind/libmaxminddb/releases/download/${MAXMIND_VERSION}/libmaxminddb-${MAXMIND_VERSION}.tar.gz \
-  && tar xf libmaxminddb-${MAXMIND_VERSION}.tar.gz \
-  && cd libmaxminddb-${MAXMIND_VERSION} \
-  && ./configure \
-  && make \
-  && make check \
-  && make install \
-  && ldconfig
-
-RUN curl -fSL https://github.com/leev/ngx_http_geoip2_module/archive/${GOIP_MODULE_VERSION}.tar.gz -o ngx_http_geoip2_module-${GOIP_MODULE_VERSION}.tar.gz \
-  && tar -zxC /usr/src -f /usr/src/ngx_http_geoip2_module-${GOIP_MODULE_VERSION}.tar.gz
-
 WORKDIR /usr/src/nginx-$NGINX_VERSION 
 
 RUN CONFIG=" \
@@ -178,8 +164,6 @@ RUN CONFIG=" \
     --with-zlib=/usr/src/zlib-${ZLIB_VERSION} \
     --with-openssl=/usr/src/openssl-${OPENSSL_VERSION}g \
     --with-perl_modules_path=/usr/share/perl/5.26.1 \
-    --add-module=/usr/src/ngx_http_geoip2_module-${GOIP_MODULE_VERSION} \
-    --add-dynamic-module=/usr/src/ngx_http_geoip2_module-${GOIP_MODULE_VERSION} \
     --add-module=/usr/src/nginx-module-vts-$VTS_VERSION \
     --add-module=/usr/src/nginx_upstream_check_module \
     --with-debug \
@@ -194,19 +178,8 @@ RUN CONFIG=" \
 
 WORKDIR /
 
-RUN curl "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=${LICENSE_KEY_FOR_GEOIP}&suffix=tar.gz" -o GeoLite2-Country.tar.gz \
-  && tar -xzvf GeoLite2-Country.tar.gz \
-  && mkdir -p /var/opt/maxmind/ \
-  && mv GeoLite2-Country_*/GeoLite2-Country.mmdb /var/opt/maxmind/GeoLite2-Country.mmdb    
-
-RUN curl "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key=${LICENSE_KEY_FOR_GEOIP}&suffix=tar.gz" -o GeoLite2-City.tar.gz \
-  && tar -xzvf GeoLite2-City.tar.gz \
-  && mkdir -p /var/opt/maxmind/ \
-  && mv GeoLite2-City_*/GeoLite2-City.mmdb /var/opt/maxmind/GeoLite2-City.mmdb    
-
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY nginx.vh.default.conf /etc/nginx/conf.d/default.conf
-COPY fastcgi_params /etc/nginx/fastcgi_params
 
 RUN mkdir -p /var/cache/nginx/ && chown nginx:nginx /var/cache/nginx
 
