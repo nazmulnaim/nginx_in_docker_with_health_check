@@ -12,7 +12,7 @@ To obtain the GeoIP2 license you will need to visit <https://www.maxmind.com/en/
 
 ## Run instruction
 
-`docker-composer up`
+`docker-compose up`
 
 ## Observation
 
