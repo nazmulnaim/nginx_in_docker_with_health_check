@@ -6,7 +6,7 @@
 
 ## Run instruction
 
-`docker-composer up`
+`docker-compose up`
 
 ## Observation
 
