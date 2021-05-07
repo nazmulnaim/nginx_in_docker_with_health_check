@@ -2,7 +2,7 @@
 
 ## Build instruction
 
-`docker build -t nginx-with-health-check-geoip2-vts:latest .`
+`docker build -t nginx-with-health-check-vts:latest .`
 
 ## Run instruction
 

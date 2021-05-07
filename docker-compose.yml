@@ -1,7 +1,7 @@
 version: "3.9"  # optional since v1.27.0
 services:
   nginx:
-    image: nginx-with-health-check-geoip2-vts:latest
+    image: nginx-with-health-check-vts:latest
     ports:
       - "80:80"
       - "11050:11050"
